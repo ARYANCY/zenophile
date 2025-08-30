@@ -1,11 +1,12 @@
 const express = require("express");
-const path = require("path");
-const dotenv = require("dotenv");
-const mongoose = require("mongoose");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const moment = require("moment");
+const flash = require("connect-flash");
 const engine = require("ejs-mate");
+const path = require("path");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+
 dotenv.config();
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,17 +16,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
-// --- View Engine ---
 app.engine('ejs', engine);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
-// --- MongoDB Connection ---
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log("MongoDB connected"))
-  .catch((err) => console.error("MongoDB connection error:", err));
-
-// --- Session Setup ---
+// --- Session & Flash ---
 app.use(session({
   secret: process.env.SESSION_SECRET || "temporarySecret",
   resave: false,
@@ -33,32 +28,40 @@ app.use(session({
   store: MongoStore.create({ mongoUrl: process.env.MONGO_URI })
 }));
 
-// --- Temporary UserId for testing ---
+app.use(flash());
+
 app.use((req, res, next) => {
-  // Replace with an actual user ObjectId from your database
-  req.session.userId = "64f7b2c8c2f5b5a1d8e7a123"; 
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
   next();
 });
 
+// --- MongoDB ---
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log("MongoDB connected"))
+  .catch((err) => console.error("MongoDB connection error:", err));
 
-// --- Routers ---
+// --- Routes ---
+const authRoutes = require("./routes/authRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
+const requireLogin = require("./middleware/authMiddleware");
 
-app.use("/chatbot", chatbotRoutes);
-app.use("/dashboard", dashboardRoutes);
+// Public routes
+app.use("/", authRoutes);
 
-// --- Root Route ---
+// Protected routes
+app.use("/chatbot", requireLogin, chatbotRoutes);
+app.use("/dashboard", requireLogin, dashboardRoutes);
+
+// Root redirect
 app.get("/", (req, res) => {
-  res.redirect("/chatbot"); 
+  if (req.session.userId) res.redirect("/chatbot");
+  else res.redirect("/login");
 });
 
-// --- 404 Handler ---
-app.use((req, res) => {
-  res.status(404).send("Page not found");
-});
+// 404
+app.use((req, res) => res.status(404).send("Page not found"));
 
-// --- Start Server ---
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+// Start server
+app.listen(port, () => console.log(`Server running at http://localhost:${port}`));

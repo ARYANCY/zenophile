@@ -6,8 +6,16 @@
   <title>ChatBuddy</title>
   <link rel="stylesheet" href="/css/partials.css">
   <link rel="stylesheet" href="/css/chatbot.css">
+  <link rel="stylesheet" href="/css/auth.css">
+
 </head>
 
+<% if (success) { %>
+  <div class="flash flash-success"><%= success %></div>
+<% } %>
+<% if (error) { %>
+  <div class="flash flash-error"><%= error %></div>
+<% } %>
 
 
  <nav>

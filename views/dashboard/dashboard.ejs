@@ -26,8 +26,8 @@
   </form>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script>
-    const labels = <%- JSON.stringify(chartLabels || []) %>;
-    const data = <%- JSON.stringify(chartData || {}) %>;
+    const labels = "<%- JSON.stringify(chartLabels || [])%>";
+    const data = "<%- JSON.stringify(chartData || {}) %>";
 
     const ctx = document.getElementById('metricsChart').getContext('2d');
     new Chart(ctx, {
@@ -40,32 +40,28 @@
             data: data.stress_level || [],
             borderColor: 'red',
             backgroundColor: 'rgba(255,0,0,0.1)',
-            fill: true,
-            tension: 0.4
+            fill: true
           },
           {
             label: 'Happiness Level',
             data: data.happiness_level || [],
             borderColor: 'green',
             backgroundColor: 'rgba(0,255,0,0.1)',
-            fill: true,
-            tension: 0.4
+            fill: true
           },
           {
             label: 'Anxiety Level',
             data: data.anxiety_level || [],
             borderColor: 'orange',
             backgroundColor: 'rgba(255,165,0,0.1)',
-            fill: true,
-            tension: 0.4
+            fill: true
           },
           {
             label: 'Overall Mood',
             data: data.overall_mood_level || [],
             borderColor: 'blue',
             backgroundColor: 'rgba(0,0,255,0.1)',
-            fill: true,
-            tension: 0.4
+            fill: true
           }
         ]
       },
@@ -74,5 +70,6 @@
         scales: { y: { min: 0, max: 50 } }
       }
     });
+
   </script>
 </body>
