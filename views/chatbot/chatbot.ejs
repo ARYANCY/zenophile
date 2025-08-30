@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate') %>
+<body>
+    <div class="chat-container">
+      <!-- Chat header -->
+      <div class="chat-header">ChatBuddy</div>
+
+      <!-- Chat messages loop -->
+      <div class="chat-messages">
+        <% messages.forEach(msg => { %>
+          <div class="chat-message <%= msg.sender === 'user' ? 'user' : 'bot' %>">
+            <strong><%= msg.sender === 'user' ? 'You' : 'ChatBuddy' %>:</strong> <%= msg.text %>
+          </div>
+        <% }) %>
+      </div>
+
+      <!-- Form to send a new message -->
+      <form action="/chatbot" method="POST">
+        <input type="text" name="message" placeholder="Type your message..." required />
+        <button type="submit">Send</button>
+      </form>
+
+      <!-- Dashboard link -->
+      <% if (messages.length > 0) { %>
+        <a href="/dashboard?userId=<%= sessionID %>" target="_blank" class="dashboard-link">
+          Go to Dashboard
+        </a>
+      <% } %>
+    </div>
+</body>

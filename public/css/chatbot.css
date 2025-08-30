@@ -1,0 +1,138 @@
+/* chatbot.css - Friendly, Trustworthy Chatbot Style */
+
+body {
+  font-family: 'Poppins', Arial, sans-serif;
+  background: linear-gradient(135deg, #D0E8FF, #6AB8F7, #4A90E2);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.chat-container {
+  background: #fff;
+  width: 500px;
+  max-width: 95%;
+  margin-top: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-header {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.chat-messages {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.chat-message {
+  padding: 12px 20px;
+  border-radius: 25px;
+  max-width: 80%;
+  word-wrap: break-word;
+  font-size: 1rem;
+  line-height: 1.4;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.chat-message.user {
+  background: #4A90E2;
+  color: #fff;
+  align-self: flex-end;
+  margin-left: auto;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+
+.chat-message.bot {
+  background: #e0f7fa;
+  color: #333;
+  align-self: flex-start;
+  margin-right: auto;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.05);
+}
+
+form {
+  display: flex;
+  gap: 10px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 12px 18px;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+input[type="text"]:focus {
+  border-color: #4A90E2;
+  box-shadow: 0 0 10px rgba(74,144,226,0.2);
+}
+
+button {
+  background: #4A90E2;
+  color: #fff;
+  border: none;
+  border-radius: 25px;
+  padding: 12px 25px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(74,144,226,0.3);
+}
+
+button:hover {
+  background: #357ABD;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(74,144,226,0.4);
+}
+
+.dashboard-link {
+  margin-top: 15px;
+  display: inline-block;
+  text-decoration: none;
+  background: #6AB8F7;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-weight: 500;
+  text-align: center;
+  transition: all 0.3s;
+}
+
+.dashboard-link:hover {
+  background: #4A90E2;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(74,144,226,0.3);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar for messages */
+.chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+.chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(74,144,226,0.4);
+  border-radius: 10px;
+}
