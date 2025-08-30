@@ -5,7 +5,6 @@ const normalizeEmail = (email) => email.trim().toLowerCase();
 
 // Registration page
 exports.getRegister = (req, res) => {
-  // Prevent logged-in users from accessing registration page
   if (req.session.userId) return res.redirect("/chatbot");
   res.render("auth/register");
 };
@@ -15,13 +14,12 @@ exports.postRegister = async (req, res) => {
   try {
     const { name, email, password, confirmPassword } = req.body;
 
-    // Validation
     if (!name || !email || !password || !confirmPassword) {
       req.flash("error", "All fields are required");
       return res.redirect("/register");
     }
 
-    if (password !== confirmPassword) {
+    if (password.trim() !== confirmPassword.trim()) {
       req.flash("error", "Passwords do not match");
       return res.redirect("/register");
     }
@@ -35,16 +33,15 @@ exports.postRegister = async (req, res) => {
       return res.redirect("/login");
     }
 
-    // Create new user
+    // Create new user (schema will hash password automatically)
     const user = new User({
       name: name.trim(),
       email: normalizedEmail,
-      password
+      password: password.trim()
     });
 
     await user.save();
 
-    // Auto-login after registration
     req.session.userId = user._id;
     req.flash("success", `Registration successful! Welcome, ${user.name}`);
     res.redirect("/chatbot");
@@ -58,7 +55,6 @@ exports.postRegister = async (req, res) => {
 
 // Login page
 exports.getLogin = (req, res) => {
-  // Prevent logged-in users from accessing login page
   if (req.session.userId) return res.redirect("/chatbot");
   res.render("auth/login");
 };
@@ -81,13 +77,12 @@ exports.postLogin = async (req, res) => {
       return res.redirect("/login");
     }
 
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await user.comparePassword(password.trim());
     if (!isMatch) {
       req.flash("error", "Invalid email or password");
       return res.redirect("/login");
     }
 
-    // Successful login
     req.session.userId = user._id;
     req.flash("success", `Welcome back, ${user.name}`);
     res.redirect("/chatbot");
@@ -103,6 +98,6 @@ exports.postLogin = async (req, res) => {
 exports.logout = (req, res) => {
   req.session.destroy(err => {
     if (err) console.error("Logout error:", err);
-    res.redirect("/login");
+    res.redirect("/");
   });
 };

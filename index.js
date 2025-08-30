@@ -46,6 +46,7 @@ const authRoutes = require("./routes/authRoutes");
 const chatbotRoutes = require("./routes/chatbotRoutes");
 const dashboardRoutes = require("./routes/dashboardRoutes");
 const requireLogin = require("./middleware/authMiddleware");
+const { title } = require("process");
 
 // Public routes
 app.use("/", authRoutes);
@@ -56,8 +57,7 @@ app.use("/dashboard", requireLogin, dashboardRoutes);
 
 // Root redirect
 app.get("/", (req, res) => {
-  if (req.session.userId) res.redirect("/chatbot");
-  else res.redirect("/login");
+   res.render("index",{title:"Home",  user: req.session.userId});
 });
 
 // 404

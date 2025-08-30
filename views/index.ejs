@@ -1,15 +1,56 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title><%= title %></title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title || "Zenophile" %></title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h1>Welcome <%= user ? user.username : "Guest" %></h1>
-  <% if (user) { %>
-    <a href="/auth/logout">Logout</a>
-    <a href="/dashboard">Dashboard</a>
-  <% } else { %>
-    <a href="/auth/login">Login</a> | <a href="/auth/register">Register</a>
-  <% } %>
+<body class="min-h-screen bg-gradient-to-br from-blue-100 via-blue-200 to-blue-400 flex items-center justify-center">
+  
+  <div class="bg-white/80 backdrop-blur-xl shadow-2xl rounded-3xl p-10 md:p-14 w-[90%] max-w-6xl grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+    
+    <!-- Left Section -->
+    <div class="text-center md:text-left">
+      <h1 class="text-5xl md:text-6xl font-extrabold text-blue-800 drop-shadow-sm mb-6">
+        Zenophile
+      </h1>
+      <h2 class="text-2xl md:text-3xl italic text-gray-700 mb-6">
+        "Peace begins with a single mindful moment."
+      </h2>
+      <p class="text-lg text-gray-600 mb-10 leading-relaxed">
+        Zenophile is your personal wellness companion — connect with experts, explore mindfulness, track your journey, and embrace a healthier, happier you.
+      </p>
+
+      <% if (user) { %>
+        <div class="flex flex-wrap justify-center md:justify-start gap-4">
+          <a href="/dashboard" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg transition transform hover:scale-105">
+            Go to Dashboard
+          </a>
+          <a href="/auth/logout" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 rounded-xl font-semibold shadow-md transition transform hover:scale-105">
+            Logout
+          </a>
+        </div>
+      <% } else { %>
+        <div class="flex flex-wrap justify-center md:justify-start gap-4">
+          <a href="/login" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold shadow-lg transition transform hover:scale-105">
+            Login
+          </a>
+          <a href="/register" class="px-6 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-semibold shadow-lg transition transform hover:scale-105">
+            Register
+          </a>
+        </div>
+      <% } %>
+    </div>
+
+    <!-- Right Section (Image) -->
+    <div class="flex justify-center md:justify-end">
+      <img src="/images/med.jpg" alt="Zenophile Wellness" class="rounded-2xl shadow-xl max-h-[500px] object-cover">
+    </div>
+  </div>
+
+  <footer class="absolute bottom-6 text-gray-700 text-sm text-center">
+    © <%= new Date().getFullYear() %> Zenophile · All rights reserved
+  </footer>
 </body>
 </html>

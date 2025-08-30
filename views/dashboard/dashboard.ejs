@@ -1,75 +1,92 @@
 <% layout('layouts/boilerplate') %>
-<body>
-  <h1>ChatBuddy Dashboard</h1>
 
-  <div class="todo">
-    <h3>Today's TODOs by ChatBuddy</h3>
-    <ul>
-      <% if (todos.length === 0) { %>
-        <li>No tasks for today</li>
-      <% } else { %>
-        <% todos.forEach((task, index) => { %>
-          <li>
-            <input type="checkbox" id="todo-<%= index %>" <%= task.completed ? "checked" : "" %> />
-            <label for="todo-<%= index %>"><%= task.title %></label>
-          </li>
-        <% }) %>
-      <% } %>
-    </ul>
-  </div>
+<h1>ChatBuddy Dashboard</h1>
 
-  <h3>Emotional Metrics (Last 7 Days)</h3>
-  <canvas id="metricsChart" width="800" height="400"></canvas>
+<div class="todo">
+  <h3>Today's TODOs by ChatBuddy</h3>
+  <ul>
+    <% if (!todos || todos.length === 0) { %>
+      <li>No tasks for today</li>
+    <% } else { %>
+      <% todos.forEach((task, index) => { %>
+        <li>
+          <input type="checkbox" id="todo-<%= index %>" <%= task.completed ? "checked" : "" %> disabled />
+          <label for="todo-<%= index %>"><%= task.title %></label>
+        </li>
+      <% }) %>
+    <% } %>
+  </ul>
+</div>
 
-  <form action="/chatbot" method="GET" style="margin-top: 20px;">
-    <button type="submit">Back to Chat</button>
-  </form>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const labels = "<%- JSON.stringify(chartLabels || [])%>";
-    const data = "<%- JSON.stringify(chartData || {}) %>";
+<h3>Emotional Metrics (Last 7 Days)</h3>
+<canvas id="metricsChart" width="800" height="400"></canvas>
 
-    const ctx = document.getElementById('metricsChart').getContext('2d');
-    new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: labels,
-        datasets: [
-          {
-            label: 'Stress Level',
-            data: data.stress_level || [],
-            borderColor: 'red',
-            backgroundColor: 'rgba(255,0,0,0.1)',
-            fill: true
-          },
-          {
-            label: 'Happiness Level',
-            data: data.happiness_level || [],
-            borderColor: 'green',
-            backgroundColor: 'rgba(0,255,0,0.1)',
-            fill: true
-          },
-          {
-            label: 'Anxiety Level',
-            data: data.anxiety_level || [],
-            borderColor: 'orange',
-            backgroundColor: 'rgba(255,165,0,0.1)',
-            fill: true
-          },
-          {
-            label: 'Overall Mood',
-            data: data.overall_mood_level || [],
-            borderColor: 'blue',
-            backgroundColor: 'rgba(0,0,255,0.1)',
-            fill: true
-          }
-        ]
+<form action="/chatbot" method="GET" style="margin-top: 20px;">
+  <button type="submit">Back to Chat</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const labels = <%- JSON.stringify(chartLabels || []) %>;
+  const data = <%- JSON.stringify(chartData || {}) %>;
+
+  const ctx = document.getElementById('metricsChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Stress Level',
+          data: data.stress_level || [],
+          borderColor: 'red',
+          backgroundColor: 'rgba(255,0,0,0.1)',
+          fill: true,
+          tension: 0.4
+        },
+        {
+          label: 'Happiness Level',
+          data: data.happiness_level || [],
+          borderColor: 'green',
+          backgroundColor: 'rgba(0,255,0,0.1)',
+          fill: true,
+          tension: 0.4
+        },
+        {
+          label: 'Anxiety Level',
+          data: data.anxiety_level || [],
+          borderColor: 'orange',
+          backgroundColor: 'rgba(255,165,0,0.1)',
+          fill: true,
+          tension: 0.4
+        },
+        {
+          label: 'Overall Mood',
+          data: data.overall_mood_level || [],
+          borderColor: 'blue',
+          backgroundColor: 'rgba(0,0,255,0.1)',
+          fill: true,
+          tension: 0.4
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: { mode: 'index', intersect: false }
       },
-      options: {
-        responsive: true,
-        scales: { y: { min: 0, max: 50 } }
+      interaction: { mode: 'nearest', intersect: false },
+      scales: {
+        y: {
+          min: 0,
+          max: 50,
+          title: { display: true, text: 'Level' }
+        },
+        x: {
+          title: { display: true, text: 'Days' }
+        }
       }
-    });
-
-  </script>
-</body>
+    }
+  });
+</script>

@@ -1,68 +1,81 @@
-.flash {
-  padding: 15px;
-  margin: 15px auto;
-  width: 90%;
-  border-radius: 8px;
-  text-align: center;
-  font-weight: 600;
-  max-width: 500px;
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
-
-.flash-success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.flash-error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
 
 .navbar {
-  width: 100%;                       
+  width: 100%;
   display: flex;
-  justify-content: space-between;     
-  padding: 15px 40px;
-  background: #4A90E2;             
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 40px;
+  background: rgba(78, 91, 107, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: #fff;
-  border-radius: 0 0 12px 12px;    
-  position: sticky;                   
+  border-radius: 0 0 16px 16px;
+  position: sticky;
   top: 0;
   left: 0;
-  z-index: 1000;                     
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  z-index: 9999;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  transition: background 0.3s ease, padding 0.3s ease;
+}
+
+.navbar:hover {
+  background: rgba(74, 144, 226, 0.95);
 }
 
 .navbar a {
   color: #fff;
   text-decoration: none;
   font-weight: 600;
+  font-size: 1rem;
+  position: relative;
+  padding: 6px 0;
   transition: color 0.3s ease;
 }
 
+.navbar a::after {
+  content: "";
+  position: absolute;
+  width: 0%;
+  height: 2px;
+  left: 0;
+  bottom: -4px;
+  background: #D0E8FF;
+  transition: width 0.3s ease;
+}
+
 .navbar a:hover {
-  color: #D0E8FF;                  
+  color: #D0E8FF;
+}
+
+.navbar a:hover::after {
+  width: 100%;
 }
 
 .navbar-menu {
   list-style: none;
   display: flex;
-  gap: 25px;                    
+  gap: 30px;
   margin: 0;
   padding: 0;
 }
 
+body {
+  padding-top: 80px; /* Reserve space for sticky navbar */
+}
+
 .footer {
-  width: 100%;                        
+  width: 100%;
   text-align: center;
-  padding: 20px;
+  padding: 22px;
   background: #f0f8ff;
   color: #333;
-  margin-top: 40px;
+  margin-top: 50px;
   border-top: 1px solid #ccc;
   font-size: 0.9rem;
-  box-shadow: 0 -2px 6px rgba(0,0,0,0.05);
+  box-shadow: 0 -2px 6px rgba(0,0,0,0.06);
 }
